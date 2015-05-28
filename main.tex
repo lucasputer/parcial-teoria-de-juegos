@@ -1,0 +1,330 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\input{codesnippet}
+
+
+\title{Parcial de Teoría de juegos}
+
+\author{Lucas Puterman}
+
+\date{27 de Mayo de 2015}
+
+\begin{document}
+\maketitle
+
+
+\section{Ejercicio 1}
+
+\subsection{A}
+
+Tengo $n$ y $k$ pares. Sea $F_{i}$ con $0 \geq i \geq k$, la fila correspondiente al valor $i$ de las filas del Nim. Como $k$ es par, yo puedo partir imaginariamente el tablero a la mitad en dos subtableros de tamaño $k/2$ de forma tal que para toda fila $F_{i}$ existe la fila equivalente en el otro subtablero representada por  $F_{k-i}$ en el tablero original.\\
+
+Ahora, el juego comienza con el tablero vacío, por ende la suma Nim del juego será 0. Notemos que la suma Nim del juego está representada de la siguiente forma:
+
+$$ F_{1} \oplus  \cdots \oplus F_{k}  = 0$$
+
+El jugador $I$ comienza poniendo una ficha en una fila $F_{i}$ del tablero. Lo que debe hacer el jugador $II$ es espejar el juego, es decir, colocar una ficha en la fila $F_{k-i+1}$, que es la equivalente en el otro subtablero. Luego de los primeros dos turnos, la suma Nim del juego se calcula así:
+
+$$ F_{1} \oplus  \cdots \oplus F_{i} \oplus  \cdots \oplus F_{k-i+1} \oplus  \cdots \oplus F_{k} $$
+
+Pero como todas las filas salvo la $F_{i}$ y la $F_{k-i+1}$ son 0, y éstas dos tienen el mismo valor, la suma total del juego será 0. 
+
+$$ F_{1} \oplus  \cdots \oplus F_{i} \oplus  \cdots \oplus F_{k-i+1} \oplus  \cdots \oplus F_{k}  = 0 $$
+
+Si $II$ hace eso en cada uno de sus movimientos, luego de colocar todas las fichas en el tablero, como hay $n$ fichas y $n$ es par, el juego quedará con suma Nim 0.\\
+
+Ahora, como $n$ es par, el jugador $I$ comienza a a jugar al Nim sacando fichas de una de las filas, pero al comenzar el juego la suma Nim era 0, por ende, no importa que saque, está será distinta de 0. Si el jugador $II$ restaurá el 0 en su turno, este se asegura ganar el partido.
+
+\subsection{B}
+
+Veamos, en este caso $n$ es impar, eso significa que $II$ comenzará a jugar al Nim luego de que concluya la primer etapa de colocar las fichas en el tablero.
+Supongamos que $I$ y $II$ llenan las filas con las $n$ fichas.
+
+Por el teorema de la suma visto en clase, sabemos que:
+$$g(F_{1}, \cdots ,F_{k}) = g_{1}(F_{1}) \oplus \cdots \oplus g_{k}(F_{k})$$
+
+A su vez, sabemos que la función $g(x)$ del Nim es $g(x)=x$, por lo tanto, la función $g(F_{1}, \cdots ,F_{k})$ es la suma Nim de las fichas de las $k$ filas del juego.\\ 
+
+Ahora, notemos que tenemos una cantidad impar de fichas, por lo tanto, al comenzar el Nim luego de colocar las fichas podemos afirmar que:
+
+$$g(F_{1}, \cdots ,F_{k}) \not= 0$$
+
+Ya que existe una cantidad impar de filas con fichas impares por lo que la representación binaria de la suma Nim del juego tendrá su último bit en 1.\\
+
+Por lo tanto podemos decir que al comenzar el juego Nim luego de colocar las fichas, sea $x = n$, $x \in N$ ya que $g(x) \not= 0$. Por el teorema de Sprague-Grundy podemos afirmar que:
+$$mex\{ g(y)/y \in f(x) \} \not= 0 \rightarrow \exists y / g(y) = 0$$ 
+
+Por lo tanto, el jugador $II$ que es el que comienza el juego tiene estrategia ganadora.
+
+
+% ---------------------------------
+
+% Veamos, en este caso $n$ es impar, eso significa que $II$ comenzará a jugar al Nim luego de que concluya la primer etapa de colocar las fichas en el tablero. Aquí podemos separar dos casos, $k$ es par o $k$ es impar.\\ 
+
+% \begin{itemize}
+% \item Si $k$ es par, entonces $II$ puede seguir la misma estrategia que en el punto anterior, ya que cada vez que sea su turno, dejará en 0 a la suma Nim del tablero y como $n$ es impar, la última ficha a ser colocada le corresponderá a $I$ que recibirá un tablero con suma Nim 0. Por ende, en el primer turno en el que $II$ deba sacar una ficha, si saca la última ficha que agregó $I$ dejará un tablero con suma Nim 0 y acabará ganando la partida. 
+
+% \item Si $k$ es impar, entonces $II$ puede seguir la misma estrategia que en el punto anterior pero teniendo en cuenta que si $I$ coloca en algún momento una ficha en la posición $F_{\left \lceil{k/2}\right \rceil }$ entonces $II$ no podrá lograr poner una ficha de manera tal que deje el tablero con suma Nim 0. Lo que debe hacer $II$ es colocar una ficha en la misma fila, por lo que quedarán para todas las filas distintas a $F_{\left \lceil{k/2}\right \rceil }$, $F_{i} = F_{k-i+1}$.\\
+
+% Como $n$ es impar, $I$ colocará la última ficha. Si la coloca en la casilla $F_{\left \lceil{k/2}\right \rceil }$, entonces se cumplirá que $F_{i} = F_{k-i+1}$ para todas las filas salvo la del medio, por lo que en el primer turno del Nim, $II$ deberá sacar todas las fichas de esa fila dejando así un juego con suma Nim 0, asegurandose la victoria.\\
+
+% Ahora, si $I$ coloca la última ficha en la fila $j$, $j \not= \left \lceil{k/2}\right \rceil$ se tendrá lo siguiente:
+
+% $$ F_{1} \oplus ... \oplus F_{j} \oplus ... \oplus F_{\left \lceil{k/2}\right \rceil}\oplus... \oplus F_{k-j+1} \oplus ...\oplus F_{k}  \not= 0 $$
+
+% Notemos que si calculamos la suma Nim para toda fila $F_{i}, i \not= j, \left \lceil{k/2}\right \rceil$ obtendríamos 0. Y notemos también que $F_{j} -1 = F_{k-j+1}$.
+
+% Ahora, si $F_{\left \lceil{k/2}\right \rceil} = 0$ entonces si $II$ retira la última ficha agregada por $I$ dejará el juego con suma Nim 0 y obtendrá la victoria.
+
+% Por otro lado, si $F_{\left \lceil{k/2}\right \rceil} > 0$ entonces es par ya que $n$ es impar y todas las otras pilas tienen cantidades pares salvo $F_{j}$ y $F_{k-j+1}$.
+% Aquí hay que fijarse si $F_{j} = 2^h$. Si esto no se cumple entonces la representación binaria de $F_{j}$ tendrá la pinta $...1$ y la de $F_{k-j+1}$ será exactamente igual pero terminando en 0. Por lo tanto si $II$ deja $F_{\left \lceil{k/2}\right \rceil}$ con solo una ficha dejará el tablero con suma Nim 0, asegurandose la victoria.
+
+% FALTA EL CASO DE POTENCIAS DE DOS
+
+% \end{itemize}
+
+\subsection{C}
+Veamoslo por inducción en $k$ con $k$ impar ya que queremos ver los movimientos de $I$.
+
+Caso Base k=1.\\
+
+Tenemos el tablero vacio $(0,0,0)$, que tiene la pinta $(x,x,x)$. Si agregamos una ficha en una de las pilas, sin perder la generalidad, nos quedaría un tablero de la pinta $(x,x,y)$ con $y \geq x$.\\
+
+Paso inductivo. sup vale para k, veamos que vale para k+2 y k-2.\\
+
+Veamos, por hipótesis inductiva, el jugador $II$ recibió un tablero de la pinta $(x,x,y)$ con $y \geq x$ sin perdida de la generalidad
+
+% \begin{itemize}
+% \item $n = k$\\ 
+% En este caso $II$ debe quitar una ficha, de esta forma puede dejarle a $I$ un tablero de la pinta $(x-1,x,y)$ con $y \geq x \land x>0$ o $(x,x,y-1)$ con $y>0$.\\
+% Si $I$ recibe el primer caso, como $x > 0$ entonces quita una ficha de la pila que tiene $x$ fichas y queda con la pinta $(x-1,x-1,y) = (x',x',y)$.\\
+% Si recibe el segundo caso, si $y>1$ el jugador puede quitar otra ficha a la tercer columna quedando algo de la pinta $(x,x,y-2) = (x,x,y')$, en caso contrario $y-1=0$ por lo que el jugador puede quitar todas las fichas de una de las pilas que tiene $x$ fichas, quedando algo de la pinta $(x,0,0) = (y',x',x')$ donde $x=y' \land 0=y$.\\
+
+% \item $n > k$\\ 
+
+Ahora, $II$ debe agregar una ficha, de esta forma puede dejarle a $I$ un tablero de la pinta $(x+1,x,y)$ con $y \geq x$ o $(x,x,y+1)$.\\
+Aqui es el turno de $I$, si $n > k +1$ entonces debe agregar una ficha, por lo que puede dejar si recibió el primer caso $(x+1,x+1,y)$ con $y \geq x$ que cumple los requisitos, o bien, si recibió el segundo caso, $(x,x,y+2)$ que también los cumple.
+Ahora si $n = k+1$ debe quitar una ficha, en este caso puede quitar la que agregó $II$ en el turno anterior, como por hipótesis inductiva $II$ recibió algo de la pinta $(x,x,y)$ con $y \geq x$, si quita lo último agregado, quedará algo igual.
+
+
+
+%\end{itemize}
+
+\subsection{D}
+Veamos, si $x = 2^h -1$ entonces su representación binaria tiene la pinta:
+
+
+$$(011 \cdots 1)_{2}$$
+
+Y sea, $x+1 = 2^h$, su representación binaria tiene la pinta:
+
+$$(100 \cdots 0)_{2}$$
+
+Es decir, $x+1$ tendrá un 1 seguido de $h-1$ ceros y $x$ tendrá un 0 seguido de $h-1$ unos.
+
+Ahora, notemos que si aplicamos la suma Nim a lo siguiente nos queda algo así:
+
+\begin{equation}
+\begin{array}{llll}
+& 1000 & \cdots & 0\\
+\oplus \\
+& 0111 & \cdots &1\\
+\cline{2-4}
+& 1111 & \cdots & 1
+\end{array}
+\end{equation}
+
+Como podemos ver, al aplicar la suma Nim, en la representación binaria nos quedarán $h$ unos. Ahora sea $y = 2^{h+1}$, como y es una potencia de dos entonces la representación binaria de $y$ sería:
+
+$$y = (10 \cdots 0)_{2}$$
+
+Es decir, un 1 seguido de $h$ ceros. Por otro lado, la representación binaria de $y-1 = 2^{h+1} -1 $ sería:
+
+$$y-1 = (01 \cdots 1)_{2}$$
+
+Es decir, $h$ unos.
+
+Notemos que esto es exactamente lo que obtuvimos al aplicar la suma Nim entre $x$ y $x+1$.\\
+
+Veamos ahora que sucede si $x \not= 2^h -1$:
+
+Sea $x\not= 2^h -1$. Su representación binaria tendrá la pinta:
+
+$$(b_{k} b_{k-1}  \cdots b_{1})_{2}$$
+
+donde $k = \left \lfloor \log_2{x} \right \rfloor$.
+
+Ahora, como $x\not= 2^h -1$ entonces existe $b_{i}$ tal que $b_{i}$ es el bit de la representación binaria de $x$ que tenga el primer 0, notemos también que $b_{i} \not= b_{k} $.
+
+Sea $y = x + 1$, podemos decir que la representación binaria de $y$ tiene la pinta:
+
+$$(b_{k} b_{k-1}  \cdots b_{i-1}10\cdots0 )_{2}$$
+
+Es decir, todos los bits anteriores a $b_{i}$ permanecen iguales que en $x$, el bit $b_{i} = 1$ y todos los siguientes son 0.
+
+Si hacemos suma Nim entre $x$ e $y$ obtendremos algo así:
+
+\begin{equation}
+\begin{array}{lllllllll}
+& b_{k} & \cdots & b_{i-1} & 0 & b_{i+1} &  \cdots & b_{1}\\
+\oplus \\
+& b_{k} & \cdots & b_{i-1} & 1 & 0 &  \cdots & 0\\
+\cline{2-8}
+& 0 & \cdots & 0 & 1 & b_{i+1} &  \cdots & b_{1}\\
+\end{array}
+\end{equation}
+
+Notemos que como $b_{i} \not= b_{k} $ el resultado es estrictamente menor a $x$ ya que todos los bits anteriores a $b_{i}$ quedan en 0 luego de aplicar la suma Nim.
+
+
+
+
+
+
+\subsection{E}
+
+Veamos, $n$ es par, por lo que podemos afirmar que luego de colocar las fichas, será $I$ quien comience a jugar al Nim.\\
+
+Ahora como vimos en el punto C (1.3) es posible dejar siempre una posición donde dos pilas tienen la misma cantidad de fichas, y la tercera tiene la misma cantidad o más, es decir,  las pilas quedan de la forma $(x, x, y)$ con $x \leq y$.\\
+
+Si $I$ hace esa estrategia, cuando comience a retirar fichas recibirá algo con la pinta $(x,x,y+1)$ o $(x,x+1,y)$. Veamos los dos casos:
+
+\begin{itemize}
+\item Si recibe $(x,x,y+1)$, entonces si retira todas las filas de la última pila, por lo que quedará $(x,x,0)$ como las dos primeras filas tienen suma Nim 0, entonces $I$ se asegura la victoria.
+
+\item Si recibe $(x,x+1,y)$, sabíamos por el punto C que $x \leq y$, por lo tanto, $y > 0$ ya que si $y = 0$ entonces $x = 0$ y eso es absurdo porque $n$ es par. Además $y$ es impar porque $n$ es par y o bien $x$ es impar, o bien $x+1$ lo es. \\ 
+Ahora, si $x = y$, $I$ remueve la pila de $x+1$ y quedaría $(x,0,y) = (x,0,x)$ que tiene suma Nim 0 y se asegura la victoria. \\ 
+
+Si $y > x$ notemos que $x \oplus x+1 < x$ si $x \not= 2^h -1$ (visto en el item D). Si esto sucede entonces la suma Nim es distinta de 0 porque $y > x \oplus x+1$.
+Supongamos que esto no sucede, entonces $x = 2^h -1$ y $x + 1 = 2^h$. Entonces, sea  $ z = x \oplus x + 1 = 2^{h+1} -1$.\\
+Notemos que la suma Nim del juego es $z \oplus y$, y notemos también que esta será 0 solo si $y = z$, pero $z = 2^{h+1} -1$, si $y = 2^{h+1} -1$ entonces $z + y = 2^{h+2} -2$, pero esto es absurdo ya que $z + y = n$ y  vimos por el enunciado que $n \not= 2^{j} -2$.
+
+\end{itemize}
+
+
+\section{}
+
+\subsection{}
+
+Veamos que $Val(A) \leq Val(B)$. \\ 
+
+Sea $A = \begin{pmatrix}
+    a_{11}       & a_{12} & a_{13} & \dots & a_{1n} \\
+    a_{21}       & a_{22} & a_{23} & \dots & a_{2n} \\
+     \vdots & \vdots & \vdots & \ddots & \vdots \\
+    a_{m1}       & a_{m2} & a_{m3} & \dots & a_{mn}
+\end{pmatrix}$ y sea $B = \begin{pmatrix}
+    b_{11}       & b_{12} & b_{13} & \dots & b_{1n} \\
+    b_{21}       & b_{22} & b_{23} & \dots & b_{2n} \\
+     \vdots & \vdots & \vdots & \ddots & \vdots \\
+    b_{m1}       & b_{m2} & b_{m3} & \dots & b_{mn}
+\end{pmatrix}$ \\ 
+
+Sean $P = (p_1,\cdots,p_n)$ y $Q = (q_1,\cdots,q_m)$ estrategias óptimas para $I$ y $II$ respectivamente en $A$.
+
+Ahora, veamos que:
+
+$$\sum^{n}_{i=1}\sum^{m}_{j=1}p_{i}A_{ij}q_j = P^tAQ = Val(A)$$
+
+Como $\forall i \in [ 1..n ] , j \in [ 1 .. m ] a_{ij} \leq b_{ij} \Rightarrow P^tBQ \leq Val(A)$\\
+
+Pero éstas pueden o no ser óptimas en B. Sean $P',Q'$ tal que son estrategias óptimas en $B$ para $I$ y $II$ respectivamente. Entonces, $p'_i \leq p_i \land q'_j \leq q_j \forall i \in [ 1..n ] , j \in [ 1 .. m ]$.
+
+$$\Rightarrow P'^t B Q' = Val(B) \geq P^tBQ \geq P^t AQ = Val(A)$$
+$$\Rightarrow Val(B) \geq Val(A)$$
+
+\subsection{}
+
+Calculemos los equilibrios de Nash del juego.
+Los equilibrios puros se ven a simple vista y son (L,R) y (R,L) donde los pagos son (0,2) y (2,0). Calculemos el equilibrio mixto:\\
+
+$$p1 + (1-p)0 = 2p + (1-p)-M$$
+$$p           = 2p + -M+ Mp$$
+$$M           = p + Mp$$
+$$M           = p (1+M)$$
+$$M/(1+M)           = p $$
+
+La cuenta para $II$ es análoga, entonces el equiilbrio mixto sería:
+$$(p=M/1+M,q=M/1+M)$$
+Ahora, cuando M tiende a infinito, los dos jugadores tenderán a elegir L, por lo que los pagos tienden a 1.
+Notemos tambien que cuando M es más chico, -M se agranda, y los pagos se agragdan por lo que no sucede lo mismo que en el caso del juego no bimatricial ya que si suponemos que la matriz $B$ sería una con valores de M muy grandes, esta cumpliría los requisitos pero los pagos serían menores por lo que el valor del juego sería menor.
+
+
+
+
+\section{}
+
+\subsection{A}
+Si, el grafo de la imagen representa un equilibrio de Nash porque veamos que todos los vecinos de un $Flanders$ son $Homero$ por lo tanto si un $Flanders$ decide pasarse a $Homero$, no tendrá ningún vecino para robarle el taladro por lo que su pagó bajará de $b-c$ a 0. Por otro lado, cualquier $Homero$ del tablero tiene como vecino a un $Flanders$, por lo que si decide cambiarse a $Flanders$ su pagó que actualmente es $b$ bajará a $b-c$.
+
+
+
+\subsection{C}
+
+Sea $G(V,E)$ el grafo y sea $Adyacencia$ su matriz de adyacencia.
+Cada nodo estará incializado en Homero por defecto.
+
+Luego se meterán todos los nodos en una cola de prioridad, donde la prioridad esté definida por el grado del nodo.
+
+Se irán extrayendo uno a uno, si un nodo tiene todos sus vecinos $Homero$ entonces se convertirá en $Flanders$.
+
+Este algoritmo devuelve un equilibro de Nash como el de la foto donde hay la mínima cantidad de $Flanders$. Si un nodo es $Homero$ y ninguno de sus vecinos es $Flanders$, entonces se convierte en $Flanders$.\\ 
+
+
+\begin{codesnippet}
+Q = colaDePrioridad
+
+for each v in V do
+	v.tipo = HOMERO
+	Q.encolar(v)
+end for
+
+while Q.vacia() == false do
+	Nodo w = Q.desencolar()
+    bool hayFlanders = false
+    while hayFlanders == false && i < adyacencia(v).size() do
+    	if adyacencia(v)[i].tipo == FLANDERS then
+        	hayFlanders = true
+        end If    
+	end While
+    if hayFlanders == false then
+    	w.tipo = FLANDERS
+    end if
+end While    
+\end{codesnippet}
+
+\subsection{B}
+
+Veamos, el algoritmo dado para el item C devuelve un equilibrio de Nash válido. Ahora, notemos que encola todos los nodos en una Cola de Prioridad y luego los va desencolando según el grado del nodo. Si tomamos la cola de prioridad priorizando los de menor grado, el algoritmo devolvería otro equilibrio de Nash distinto y este también sería válido. Podemos ver que este equilibrio es distinto si nos fijamos que el primero en ser desencolado en el algoritmo de C será $Flanders$, mientras que ese mismo nodo en el algoritmo modificado seraá el último en ser desencolado, por lo que será $Homero$ si su grado es mayor a 0, y si su grado es 0 entonces ningún nodo está conectado con otro ya que era el de mayor grado en C.
+
+\subsection{D}
+
+\begin{itemize}
+\item Nos pide encontrar una familia de grafos tal que el equilibrio de Nash necesite un número de taladros independiente de N.
+Si tomamos como familia $K_n$ es decir el grafo completo de $n$ nodos, como todos los nodos están conectados con todos los otros solo se necesita un $Flanders$ independientemente de la cantidad de nodos que tenga el grafo.
+
+\item Aquí nos pide encontrar una familia de grafos tal que todo equilibrio de Nash necesita al menos N/2 taladros, pero existe una distribución
+de taladros tal que 2 sean suficientes para que todos tengan un taladro o tengan un
+vecino que tenga taladro.
+
+Veamos, sean $v$ y $w$ dos nodos que llamaremos "centrales", estos nodos están conectados entre sí. Para todo otro nodo $w$ en el grafo distinto de estos dos, o bien $w$ tiene como único vecino a $v$, o bien lo tiene a $w$.
+
+De esta manera para lograr todos los equilibrios de Nash necestio N/2 nodos $Flanders$ pero si $v$ y $w$ son $Flanders$ todos los nodos tendrán o un taladro o un vecino con taladro. Y veamos, que este no es un equilibrio ya que $v$ es $Flanders$ pero tiene un vecino que tambieén lo es.
+
+
+\item Por último nos piden encontrar una familia tal que todo equilibrio de Nash utiliza aproximadamente una fracción N/k de taladros,
+con k fijo (y que el grafo no sea unión de dos o más grafos disjuntos).
+
+Aquí podemos considerar una familia de grafos de la siguiente manera, definimos componentes conexas como $k_m$ para un $m$ dado y luego conectamos a un nodo de cada una de las componentes con las otras. De esta manera necesitaria un $Flanders$ por cada una de las componentes conexas originales y $k$ estaría definido como $N/m$.
+
+\end{itemize}
+
+
+
+
+\end{document}
